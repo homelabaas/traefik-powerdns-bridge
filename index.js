@@ -30,33 +30,41 @@ function updatePowerDns(hostname, ipAddress) {
     if (err) {
       console.log("Error talking to PowerDNS");
       console.log(err);
-    } else {
-
     }
-
   });
 }
 
 function updateDns() {
-  const url = process.env.TRAEFIK_API_URL;
-  const loadBalancerIp = process.env.LB_IP;
-  console.log("Updating DNS entries.")
-  request(url, function (error, response, body) {
-    const parsedBody = JSON.parse(body);
-    if (parsedBody.docker.frontends) {
-      const frontendKeys = Object.keys(parsedBody.docker.frontends);
-      for (const key of frontendKeys) {
-        const frontend = parsedBody.docker.frontends[key];
-        if (frontend.routes) {
-          hostKey = Object.keys(frontend.routes)[0];
-          const rule = frontend.routes[hostKey];
-          const hostname = rule.rule.replace("Host:","");
-          console.log("Setting DNS Value for : " + hostname + " to " + loadBalancerIp.toString());
-          updatePowerDns(hostname, loadBalancerIp);
+  try {
+    const url = process.env.TRAEFIK_API_URL;
+    const loadBalancerIp = process.env.LB_IP;
+    console.log("Updating DNS entries.")
+    request(url, function (error, response, body) {
+      const parsedBody = JSON.parse(body);
+      if (parsedBody.docker.frontends) {
+        const frontendKeys = Object.keys(parsedBody.docker.frontends);
+        for (const key of frontendKeys) {
+          const frontend = parsedBody.docker.frontends[key];
+          if (frontend.routes) {
+            hostKey = Object.keys(frontend.routes)[0];
+            const rule = frontend.routes[hostKey];
+            const hostname = rule.rule.replace("Host:","");
+            console.log("Setting DNS Value for : " + hostname + " to " + loadBalancerIp.toString());
+            updatePowerDns(hostname, loadBalancerIp);
+          }
         }
       }
+    });
+  } catch (err) {
+    console.log("Error attempting to update dns.");
+    if (err.message) {
+      console.log(err.message);
     }
-  });
+    if (err.stack) {
+      console.log("Stack:");
+      console.log(err.stack);
+    }
+  }
   setTimeout(updateDns, 30000);
 }
 
