@@ -4,14 +4,14 @@
   "description": "Container which can create new DNS entries in PowerDNS when they appear in the traefik loadbalancer.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":"node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/mrgeoffrich/traefik-powerdns-bridge.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Geoff Rich",
   "license": "ISC",
   "bugs": {
     "url": "https://gitlab.com/mrgeoffrich/traefik-powerdns-bridge/issues"

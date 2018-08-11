@@ -39,8 +39,8 @@ function updatePowerDns(hostname, ipAddress) {
 
 function updateDns() {
   const url = process.env.TRAEFIK_API_URL;
-  const powerDnsUrl = process.env.POWERDNS_API_URL;
   const loadBalancerIp = process.env.LB_IP;
+  console.log("Updating DNS entries.")
   request(url, function (error, response, body) {
     const parsedBody = JSON.parse(body);
     if (parsedBody.docker.frontends) {
@@ -57,8 +57,31 @@ function updateDns() {
       }
     }
   });
+  setTimeout(updateDns, 30000);
 }
 
-//setInterval(updateDns, 30000);
+function validateThenUpdate() {
+  if (process.env.TRAEFIK_API_URL === undefined) {
+    console.log("Environment variable undefined: TRAEFIK_API_URL.")
+    return;
+  }
+  if (process.env.LB_IP === undefined) {
+    console.log("Environment variable undefined: LB_IP.")
+    return;
+  }
+  if (process.env.POWERDNS_API_KEY === undefined) {
+    console.log("Environment variable undefined: POWERDNS_API_KEY.")
+    return;
+  }
+  if (process.env.DNS_ZONE === undefined) {
+    console.log("Environment variable undefined: DNS_ZONE.")
+    return;
+  }
+  if (process.env.POWERDNS_API_URL === undefined) {
+    console.log("Environment variable undefined: POWERDNS_API_URL.")
+    return;
+  }
+  setTimeout(updateDns, 0);
+}
 
-updateDns();
+validateThenUpdate();
