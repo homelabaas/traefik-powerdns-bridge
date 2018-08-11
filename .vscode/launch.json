@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}\\index.js",
+            "env": {
+                "TRAEFIK_API_URL":"http://192.168.0.201:8080/api",
+                "POWERDNS_API_URL":"http://192.168.0.46:8081/api/v1/servers/localhost",
+                "LB_IP":"192.168.0.201",
+                "POWERDNS_API_KEY":"powerdnsapikey",
+                "DNS_ZONE":"blingtowers.com"
+            }
+        }
+    ]
+}
