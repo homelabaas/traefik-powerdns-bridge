@@ -20,3 +20,9 @@ jobs:
               docker tag $CIRCLE_PROJECT_REPONAME "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest"
               docker push "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:latest"
             fi
+workflows:
+  version: 2
+  main-workflow:
+    jobs:
+      - build:
+          context: Docker Credentials
